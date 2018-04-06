@@ -1,0 +1,254 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Perspective</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="demo website for final college submission" />
+    <meta name="keywords" content="" />
+    
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <!-- Icomoon Icon Fonts-->
+    <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+    <!-- Simple Line Icons -->
+    <link rel="stylesheet" href="{% static 'css/simple-line-icons.css' %}">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+	<style>
+	#sunny{
+		text-align: center;
+
+	}
+	#ivjot{
+		padding-left: 100px;
+	}
+	</style>
+
+	<!-- Modernizr JS -->
+	<script src="{% static 'js/modernizr-2.6.2.min.js' %} ">
+	</script>
+	</head>
+	<body>
+	<header role="banner" id="fh5co-header">
+		<div class="container">
+		<!-- <div class="row"> -->
+		<nav class="navbar navbar-default">
+		<div class="navbar-header">
+		<!-- Mobile Toggle Menu Button -->
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
+	<a class="navbar-brand" href="#">Perspective</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+		<ul class="nav navbar-nav navbar-right">
+		<li class="active"><a href="#" data-nav-section="home"><span>Home</span></a></li>
+	<li><a href="#" data-nav-section="Augmentation"><span>Augmentation</span></a></li>
+	<li><a href="#" data-nav-section="Recommendation"><span>Recommendation</span></a></li>
+	<li><a href="#" data-nav-section="Ingestion"><span>Ingestion</span></a></li>
+	<li><a href="#" data-nav-section="Categorization"><span>Categorization</span></a></li>
+	<li><a href="#" data-nav-section="TEAM"><span>TEAM</span></a></li>
+	</ul>
+	</div>
+	</nav>
+	<!-- </div> -->
+	</div>
+	</header>
+
+	<section id="fh5co-home" data-section="home" style="background-image: url(images/full_image_2.jpg);" data-stellar-background-ratio="0.5">
+		<div class="gradient"></div>
+		<div class="container">
+		<div class="text-wrap">
+		<div class="text-inner">
+		<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+		<h1 class="to-animate">Perspective.</h1>
+		<h2 class="to-animate">Perspective is a SAAS which other platforms, specially e-commerce websites can integrate to deliver better shopping experience to the customers and additional feature for DB engineers.
+	<br/>
+	<a href="#" target="">Demo website</a></h2>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	<div class="slant">
+		</div>
+
+		</section>
+		</br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<section id="fh5co-intro" data-section="Augmentation">
+		<br>
+		<br><br>
+		<div class="container">
+		<div class="row row-bottom-padded-lg">
+		<div class="row watch-video text-center to-animate" id="ivjot" >
+		<span>Augmentation</span>
+		<p>Representing three-dimensional objects on a two-dimensional surface using Augmented Reality to enhance the shopping experience.</p>
+	<a href="https://vimeo.com/channels/staffpicks/93951774" class="popup-vimeo btn-video"><i class="icon-play2"></i></a>
+	<br>
+
+	<p><a href="{% url 'feed' %}" class="btn btn-primary">Try How!</a></p>
+	</div>
+	</div>
+	</div>
+	</section>
+
+	<div id='sunny'>
+
+		<section id="fh5co-intro" data-section="Recommendation">
+		<br>
+		<br>
+		<br>
+		<div class="container center">
+		<div class="row row-bottom-padded-lg">
+		<div class="fh5co-block to-animate" style="background-image: url(images/img_7.jpg);">
+		<div class="overlay-darker"></div>
+		<div class="overlay"></div>
+		<div class="fh5co-text">
+		<i class="fh5co-intro-icon icon-bulb"></i>
+		<h2>Recommendation System</h2>
+	<p>Automatically recommends products to the customers based on reviews of existing customers using Natural Language Processing and Machine Learning.</p>
+	<p><a href="{% url 'feed' %}" class="btn btn-primary">Try How!</a></p>
+	</div>
+	</div>
+	</div>
+	</div>
+	</section>
+
+	<section id="fh5co-intro" data-section="Ingestion">
+		<br>
+		<br>
+		<br>
+		<div class="container">
+		<div class="row row-bottom-padded-lg">
+		<div class="fh5co-block to-animate" style="background-image: url(images/img_8.jpg);" data-section="Ingestion" >
+		<div class="overlay-darker"></div>
+		<div class="overlay"></div>
+		<div class="fh5co-text">
+		<i class="fh5co-intro-icon icon-wrench"></i>
+		<h2>Ingestion</h2>
+		<p>Automatically stores all the bills inside the billing folder of google drive of the company so that the customers doesn't have to visit stores if the lost the hardcopy of bill.</p>
+	<p><a href="{% url 'feed' %}" class="btn btn-primary">Try How!</a></p>
+	</div>
+	</div>
+	</div>
+	</div>
+	</section>
+	<section id="fh5co-intro" data-section="Categorization">
+		<br>
+		<br>
+		<br>
+		<div class="container">
+		<div class="row row-bottom-padded-lg">
+		<div class="fh5co-block to-animate" style="background-image: url(images/img_10.jpg);" data-section="Categorization">
+		<div class="overlay-darker"></div>
+		<div class="overlay"></div>
+		<div class="fh5co-text">
+		<i class="fh5co-intro-icon icon-rocket"></i>
+		<h2>Categorization</h2>
+		<p>Dynamically categorization of the product to a specific category(Camera,Telephone etc) based on the picture uploaded by the DB engineer using Image Processing Api.</p>
+	<p><a href="{% url 'feed' %}" class="btn btn-primary">Try How!</a></p>
+	</div>
+	</div>
+	</div>
+	</div>
+	</section>
+	</div>
+
+	<section id="fh5co-about" data-section="TEAM">
+		<div class="container">
+		<div class="row">
+		<div class="col-md-12 section-heading text-center">
+		<h2 class="to-animate">Team</h2>
+		<div class="row">
+		<div class="col-md-8 col-md-offset-2 subtext to-animate">
+		<h3></h3>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="row">
+		<div class="col-md-3">
+		<div class="fh5co-person text-center to-animate">
+		<figure><img src="{% static 'images/person3.jpg' %}" alt="Image"></figure>
+		<h3>Harkirat Kaur</h3>
+	<span class="fh5co-position">AR and APIs</span>
+	<p></p>
+	<ul class="social social-circle">
+		</ul>
+		</div>
+		</div>
+		<div class="col-md-3">
+		<div class="fh5co-person text-center to-animate">
+		<figure><img src="{% static 'images/person3.jpg' %}" alt="Image"></figure>
+		<h3>Ivjot Singh</h3>
+	<span class="fh5co-position">ML and WEB</span>
+	<p></p>
+	<ul class="social social-circle">
+		</ul>
+		</div>
+		</div>
+		<div class="col-md-3">
+		<div class="fh5co-person text-center to-animate">
+		<figure><img src="{% static 'images/person3.jpg' %}" alt="Image"></figure>
+		<h3>Namanpreet Singh</h3>
+	<span class="fh5co-position">AR and APIs</span>
+	<p></p>
+	<ul class="social social-circle">
+		</ul>
+		</div>
+		</div>
+		<div class="col-md-3">
+		<div class="fh5co-person text-center to-animate">
+		<figure><img src="{% static 'images/person3.jpg' %}" alt="Image"></figure>
+		<h3>Simranjot Kaur</h3>
+	<span class="fh5co-position">ML and WEB</span>
+	<p></p>
+	<ul class="social social-circle">
+		</ul>
+		</div>
+		</div>
+		</div>
+		</div>
+		</section>
+
+
+	<!-- jQuery -->
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+    <!-- jQuery Easing -->
+    <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- Waypoints -->
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <!-- Stellar Parallax -->
+    <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+    <!-- Counter -->
+    <script src="{% static 'js/jquery.countTo.js' %}"></script>
+    <!-- Magnific Popup -->
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/magnific-popup-options.js' %}"></script>
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCefOgb1ZWqYtj7raVSmN4PL2WkTrc-KyA&sensor=false"></script>
+    <script src="{% static 'js/google_map.js' %}"></script>
+
+    <script src="{% static 'js/main.js' %}"></script>
+
+    </body>
+</html>
+
