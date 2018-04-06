@@ -13,12 +13,18 @@ from django.contrib.auth.hashers import make_password, check_password
 # from django.conf import settings
 from datetime import timedelta
 from django.utils import timezone
-from django.http import HttpResponse
+
 from socially.settings import BASE_DIR
 from keys import YOUR_CLIENT_ID, YOUR_CLIENT_SECRET
 from imgurpython import ImgurClient
 from clarifai.rest import ClarifaiApp
 from paralleldots import sentiment, set_api_key
+
+from django.http import HttpResponse
+from django.views.generic import View
+
+from social.utils import render_to_pdf #created in step 4
+import datetime
 
 CLARIFAI_API_KEY = 'f3a37216201f4c3faae31795abd09ee6'
 app = ClarifaiApp(api_key=CLARIFAI_API_KEY)
@@ -351,3 +357,15 @@ def threeD_view(request, post_id):
         post = PostModel.objects.filter(pk=post_id).first()
 
     return render(request, 'threeD.html', {'post': post})
+
+
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        data = {
+            'today': datetime.date.today(),
+            'amount': 39.99,
+            'customer_name': 'Cooper Mann',
+            'order_id': 1233434,
+        }
+        pdf = render_to_pdf('pdf/invoice.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
