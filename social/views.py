@@ -29,8 +29,12 @@ import datetime
 CLARIFAI_API_KEY = 'f3a37216201f4c3faae31795abd09ee6'
 app = ClarifaiApp(api_key=CLARIFAI_API_KEY)
 
+from googleapiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
+import traceback
 
-# from socially.cre import SENDGRID_API_KEY
+from socially.cre import SENDGRID_API_KEY
 
 def index_view(request):
     return render(request, 'index.html')
@@ -74,24 +78,6 @@ def signup_view(request):
             # saving data to DB
             user = UserModel(name=name, password=make_password(password), email=email, username=username)
             user.save()
-            # sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
-            # from_email = Email("inderpreet726b@gmail.com")
-            # to_email = Email(user.email)
-            # subject = "lets do something bro"
-            # content = Content("text/plain", "hackers")
-            # mail = Mail(from_email, subject, to_email, content)
-            # response = sg.client.mail.send.post(request_body=mail.get())
-            # print(response.status_code)
-            # print(response.body)
-            # print(response.headers)
-            # #optional
-            # send_mail(subject,message,from_email,to_list,fail_silently=True)
-            # subject="Thankyou for signing up"
-            # message="you will enjoy our services \n we will in touch soon"
-            # from_email=settings.EMAIL_HOST_USER
-            # to_list =[user.email]
-            # send_mail(subject,message,from_email,to_list,fail_silently=True)
-            # #return render(request, 'login.html')
             return redirect('/social/login/')
     else:
         form = SignUpForm()
@@ -369,6 +355,7 @@ def GeneratePdf_view(request, post_id):
     }
     html = render(request, 'threeD.html', {'context': context})
     pdf = render_to_pdf('invoice.html', context)
+
     if pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
         filename = "Invoice_%s.pdf" %("12341231")
@@ -379,3 +366,136 @@ def GeneratePdf_view(request, post_id):
         response['Content-Disposition'] = content
         return response
     return html
+
+
+
+'''
+
+
+sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
+        from_email = Email("inderpreet726b@gmail.com")
+        #to_email = Email(user.email)
+
+        to_email = Email('ivjotofficial@gmail.com')
+        subject = "lets do something bro"
+        script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+        rel_path = filename_l
+        abs_file_path = os.path.join(script_dir, rel_path)
+        with open(abs_file_path,'rb') as f:
+            data = f.read()
+            f.close()
+        import base64
+        encoded = base64.b64encode(data)
+
+        attachment = Attachment()
+        attachment.set_content(pdf)
+        attachment.set_type("application/pdf")
+        attachment.set_filename(filename)
+        attachment.set_disposition("attachment")
+        attachment.set_content(encoded)
+        mail = Mail(from_email, subject, to_email, content)
+        mail.add_attachment(attachment)
+        content = Content("text/plain", "hackers")
+        mail = Mail(from_email, subject, to_email, content)
+        response = sg.client.mail.send.post(request_body=mail.get())
+        print response.status_code
+        print response.body
+        print response.headers
+
+        #send_mail(subject,message,from_email,to_list,fail_silently=True)
+        # subject="Thankyou for signing up"
+        # message="you will enjoy our services \n we will in touch soon"
+        # from_email=settings.EMAIL_HOST_USER
+        # to_list =[user.email]
+        # send_mail(subject,message,from_email,to_list,fail_silently=True)
+        # #return render(request, 'login.html')
+        
+try:
+    parent_folder_name = 'bills'
+    try:
+        import argparse
+        import os
+        flags = tools.argparser.parse_args(['--noauth_local_webserver'])
+    except ImportError:
+        flags = None
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,
+                                   'drive-python-quickstart.json')
+
+    store = file.Storage(credential_path)
+    credentials = store.get()
+    scopes = 'https://www.googleapis.com/auth/drive.file'
+    store = file.Storage('storage.json')
+    credentials = None
+    if not credentials or credentials.invalid:
+        flow = client.flow_from_clientsecrets('social/client_secret.json', scope=scopes)
+        credentials = tools.run_flow(flow, store, flags) \
+            if flags else tools.run(flow, store)
+    drive = build('drive', 'v3', http=credentials.authorize(Http()))
+    files = ((filename, 'application/vnd.google-apps.document'),)
+    # code to create folder + if folder exist do not create new +find id
+
+    # first look for the parent folder chats
+    folder_name_context = {}
+    page_token = None
+    while True:
+        response = drive.files().list(q="mimeType='application/vnd.google-apps.folder'", spaces='drive',
+                                      fields='nextPageToken, files(id, name)', pageToken=page_token).execute()
+        for file_response in response.get('files', []):
+            folder_name_context[file_response.get('name')] = file_response.get('id')
+        page_token = response.get('nextPageToken', None)
+        if page_token is None:
+            break
+
+    if parent_folder_name in folder_name_context.keys():
+        parent_folder_id = folder_name_context[parent_folder_name]
+    else:
+        file_metadata = {
+            'name': parent_folder_name,
+            'mimeType': 'application/vnd.google-apps.folder'
+        }
+        folder = drive.files().create(body=file_metadata, fields='id').execute()
+        folder_name_context[parent_folder_name] = folder.get('id')
+        parent_folder_id = folder_name_context[parent_folder_name]
+
+    # now look for the main folder in which chat is to be saved
+    folder_name_context = {}
+    page_token = None
+    while True:
+        response = drive.files().list(q="mimeType='application/vnd.google-apps.folder'", spaces='drive',
+                                      fields='nextPageToken, files(id, name)', pageToken=page_token).execute()
+        for file_response in response.get('files', []):
+            folder_name_context[file_response.get('name')] = file_response.get('id')
+        page_token = response.get('nextPageToken', None)
+        if page_token is None:
+            break
+
+    folder_name='bills'
+    if folder_name in folder_name_context.keys():
+        folder_id = folder_name_context[folder_name]
+    else:
+        file_metadata = {
+            'name': folder_name,
+            'mimeType': 'application/vnd.google-apps.folder',
+            'parents': [parent_folder_id]
+        }
+        folder = drive.files().create(body=file_metadata, fields='id').execute()
+        folder_name_context[folder_name] = folder.get('id')
+        folder_id = folder_name_context[folder_name]
+
+    # code to create file in a folder
+    for filename, mimeType in files:
+        file_metadata = {'name': filename, 'parents': [folder_id]}
+        if mimeType:
+            file_metadata['mimeType'] = mimeType
+        file_to_upload = drive.files().create(body=file_metadata, media_body=filename, fields='id').execute()
+        status = "success"
+        return status
+    # https://drive.google.com/open?id=1W1bYTdgrZobFfmwQy1tnCSS0cm9GXF7F
+except Exception as e:
+    traceback_string = traceback.format_exc()
+    print str(traceback_string)
+'''
