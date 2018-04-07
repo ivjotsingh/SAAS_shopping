@@ -1,10 +1,11 @@
 from django.conf.urls import url
-from social.views import signup_view,login_view,feed_view,post_view,like_view,comment_view,tag_view,tag_view_u,user_view,user_view_u,logout_view,index_view,detail_view,threeD_view
+from social.views import GeneratePdf_view,signup_view,login_view,feed_view,post_view,like_view,comment_view,tag_view,tag_view_u,user_view,user_view_u,logout_view,index_view,detail_view,threeD_view
 
 urlpatterns = [
     url(r'^$',index_view,name="index"),
     url(r'^signUp/$',signup_view,name="signUp"),
     url(r'^feed/(?P<post_id>[0-9]+)/$',detail_view, name='detail'),
+    url(r'^pdf/(?P<post_id>[0-9]+)/$',GeneratePdf_view, name='pdf'),
     url(r'^threeD/(?P<post_id>[0-9]+)/$',threeD_view, name='threeD'),
     url(r'^login/$',login_view,name="login"),
     url(r'^feed/$',feed_view,name="feed"),

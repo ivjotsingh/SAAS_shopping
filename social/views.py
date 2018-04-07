@@ -359,13 +359,23 @@ def threeD_view(request, post_id):
     return render(request, 'threeD.html', {'post': post})
 
 
-class GeneratePdf(View):
-    def get(self, request, *args, **kwargs):
-        data = {
-            'today': datetime.date.today(),
-            'amount': 39.99,
-            'customer_name': 'Cooper Mann',
-            'order_id': 1233434,
-        }
-        pdf = render_to_pdf('pdf/invoice.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
+def GeneratePdf_view(request, post_id):
+    context = {
+        "invoice_id": 123,
+        "customer_name": "John Cooper",
+        "amount": 1399.99,
+        "today": "Today",
+        "post_id":post_id
+    }
+    html = render(request, 'threeD.html', {'context': context})
+    pdf = render_to_pdf('invoice.html', context)
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = "Invoice_%s.pdf" %("12341231")
+        content = "inline; filename='%s'" %(filename)
+        download = True
+        if download:
+            content = "attachment; filename='%s'" %(filename)
+        response['Content-Disposition'] = content
+        return response
+    return html
