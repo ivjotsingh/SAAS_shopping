@@ -351,7 +351,7 @@ def GeneratePdf_view(request, post_id):
         "customer_name": "John Cooper",
         "amount": 1399.99,
         "today": "Today",
-        "post_id":post_id
+        "post_id": post_id
     }
     html = render(request, 'threeD.html', {'context': context})
     pdf = render_to_pdf('invoice.html', context)
