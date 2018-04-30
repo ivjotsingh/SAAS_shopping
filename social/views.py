@@ -14,7 +14,6 @@ from keys import YOUR_CLIENT_ID, YOUR_CLIENT_SECRET
 from imgurpython import ImgurClient
 from clarifai.rest import ClarifaiApp
 from paralleldots import sentiment, set_api_key
-
 from django.http import HttpResponse
 from social.utils import render_to_pdf
 
@@ -44,12 +43,14 @@ def detail_view(request, post_id):
             else:
                 neg += 1
 
-        total = pos+neg
-
-        if pos/total > 0.6:
-            post.has_recommended = True
-        else:
+        total = pos + neg
+        if total == 0:
             post.has_recommended = False
+        else:
+            if pos/total > 0.6:
+                post.has_recommended = True
+            else:
+                post.has_recommended = False
 
     return render(request, 'details.html', {'post': post})
 
@@ -123,13 +124,12 @@ def post_view(request):
                         if response["outputs"][0]["data"]:
                             if response["outputs"][0]["data"]["concepts"]:
                                 concepts = response["outputs"][0]["data"]["concepts"]
-                                for index in range(0, len(response["outputs"][0]["data"]["concepts"])):
+                                for index in range(0, len(concepts)):
                                     # for concept in concepts[:10]:
                                     tag = response["outputs"][0]["data"]["concepts"][index]['name']
-
                                     hash = TagModel.objects.filter(tag_text=tag)
 
-                                    if (hash.__len__() == 0):
+                                    if hash.__len__() == 0:
                                         hash = TagModel(tag_text=tag)
                                         hash.save()
                                     else:
@@ -151,30 +151,6 @@ def feed_view(request):
     if user:
         posts = PostModel.objects.all().order_by('-created_on')
 
-        for post in posts:
-            existing_like = LikeModel.objects.filter(post=post.id, user=user).first()
-            if existing_like:
-                post.has_liked = True
-
-            comments = CommentModel.objects.filter(post=post.id)
-            pos = 0
-            neg = 0
-            for comment in comments:
-                print comment.review
-
-                if comment.review == "negative":
-                    neg += 1
-                    print "positive comment"
-                elif comment.review == "positive":
-                    pos += 1
-            print pos
-
-
-            if pos > neg:
-                post.has_recommended = True
-            else:
-                post.has_recommended = False
-
         return render(request, 'feed.html', {'posts': posts})
     else:
 
@@ -189,7 +165,7 @@ def tag_view(request):
         hash = TagModel.objects.filter(tag_text=q).first()
         posts = FetchModel.objects.filter(id_of_tag=hash)
         posts = [post.id_of_post for post in posts]
-        if (posts == []):
+        if len(posts) == 0:
             return HttpResponse("<H1><CENTER>NO SUCH TAG FOUND</H1>")
         for post in posts:
             existing_like = LikeModel.objects.filter(post_id=post.id, user=user).first()
@@ -207,7 +183,7 @@ def tag_view_u(request, hash_tag):
         hash = TagModel.objects.filter(tag_text=hash_tag).first()
         posts = FetchModel.objects.filter(id_of_tag=hash)
         posts = [post.id_of_post for post in posts]
-        if (posts == []):
+        if len(posts) == 0:
             # make a 404 page and render it
             return HttpResponse("<H1><CENTER>NO SUCH TAG FOUND</H1>")
         for post in posts:
@@ -243,7 +219,7 @@ def user_view_u(request, user_name):
         posts = PostModel.objects.filter(user=user)
         # not_neccessary to make list
         posts = [post for post in posts]
-        if posts == []:
+        if len(posts) == 0:
             # make a 404 page and render it
             return HttpResponse("<h1>No such user found</h1>")
         else:
@@ -283,7 +259,6 @@ def comment_view(request):
 
         if form.is_valid():
             post_id = form.cleaned_data.get('post').id
-            post = PostModel.objects.filter(pk=post_id)
             comment_text = str(form.cleaned_data.get('comment_text'))
             set_api_key('qvGZYufnXUmQNxbFi6h4GDlNtu30HKzhFxJvMUnAdNc')
             review = sentiment(comment_text)
