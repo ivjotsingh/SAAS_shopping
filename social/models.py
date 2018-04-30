@@ -94,8 +94,8 @@ class TagModel(models.Model):
         return self.tag_text
 
 class FetchModel(models.Model):
-    id_of_tag=models.ForeignKey(TagModel)
-    id_of_post=models.ForeignKey(PostModel)
+    id_of_tag = models.ForeignKey(TagModel)
+    id_of_post = models.ForeignKey(PostModel)
 
     def __str__(self):
         return self.id_of_tag.tag_text + str(self.id_of_post)
