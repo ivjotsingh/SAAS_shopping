@@ -2,18 +2,13 @@
 # django
 # api
 # apps
-import sendgrid
-from sendgrid.helpers.mail import *
+
 from django.shortcuts import render, redirect
 from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm
 from models import UserModel, SessionToken, PostModel, LikeModel, CommentModel, TagModel, FetchModel
 from django.contrib.auth.hashers import make_password, check_password
-# for mailing through settings
-# from django.core.mail import send_mail
-# from django.conf import settings
 from datetime import timedelta
 from django.utils import timezone
-
 from socially.settings import BASE_DIR
 from keys import YOUR_CLIENT_ID, YOUR_CLIENT_SECRET
 from imgurpython import ImgurClient
@@ -21,20 +16,11 @@ from clarifai.rest import ClarifaiApp
 from paralleldots import sentiment, set_api_key
 
 from django.http import HttpResponse
-from django.views.generic import View
-
-from social.utils import render_to_pdf #created in step 4
-import datetime
+from social.utils import render_to_pdf
 
 CLARIFAI_API_KEY = 'f3a37216201f4c3faae31795abd09ee6'
 app = ClarifaiApp(api_key=CLARIFAI_API_KEY)
 
-from googleapiclient.discovery import build
-from httplib2 import Http
-from oauth2client import file, client, tools
-import traceback
-
-from socially.cre import SENDGRID_API_KEY
 
 def index_view(request):
     return render(request, 'index.html')
@@ -53,13 +39,14 @@ def detail_view(request, post_id):
         neg = 0
         for comment in comments:
 
-            if comment.review == 'positive' :
+            if comment.review == 'positive':
                 pos += 1
             else:
                 neg += 1
-        print pos
 
-        if pos > neg:
+        total = pos+neg
+
+        if pos/total > 0.6:
             post.has_recommended = True
         else:
             post.has_recommended = False
