@@ -52,6 +52,7 @@ class PostModel(models.Model):
     image_url = models.CharField(max_length=255)
     caption = models.CharField(max_length=240)
     created_on = models.DateTimeField(auto_now_add=True)
+    amount = models.FloatField()
     updated_on = models.DateTimeField(auto_now=True)
     has_liked = models.BooleanField(default=False)
     has_recommended= models.BooleanField(default=False)

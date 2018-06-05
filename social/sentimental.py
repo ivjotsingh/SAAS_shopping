@@ -9,8 +9,10 @@ vectorizer = CountVectorizer(analyzer="word", \
                              preprocessor=None, \
                              stop_words=None, \
                              max_features=5000)
-def sentimnet(comment_tex):
-    comment = comment_tex
+
+
+def sentimnet(comment_text):
+    comment = comment_text
     clean_train_reviews = joblib.load('fit_transform.sav')
     train_data_features = vectorizer.fit_transform(clean_train_reviews)
 

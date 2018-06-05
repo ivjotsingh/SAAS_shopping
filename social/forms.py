@@ -16,7 +16,7 @@ class LoginForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = PostModel
-        fields=['image', 'caption']
+        fields = ['amount','image','caption']
 
 
 class LikeForm(forms.ModelForm):
