@@ -164,9 +164,21 @@ def tag_view(request):
     user = check_validation(request)
     if user:
         q = request.GET.get('q')
+        '''
         hash = TagModel.objects.filter(tag_text=q).first()
         posts = FetchModel.objects.filter(id_of_tag=hash)
         posts = [post.id_of_post for post in posts]
+        '''
+        hash_tag = q.split(" ")
+        hash = TagModel.objects.filter(tag_text__in=hash_tag)
+        # hash = TagModel.objects.filter(tag_text__in=hash_tag).first()
+        posts = []
+        print hash
+        for hashh in hash:
+            posts = FetchModel.objects.filter(id_of_tag=hashh)
+            posts = [post.id_of_post for post in posts]
+        print posts
+
         if len(posts) == 0:
             return HttpResponse("<H1><CENTER>NO SUCH TAG FOUND</H1>")
         for post in posts:
@@ -181,10 +193,15 @@ def tag_view(request):
 def tag_view_u(request, hash_tag):
     user = check_validation(request)
     if user:
-
-        hash = TagModel.objects.filter(tag_text=hash_tag).first()
-        posts = FetchModel.objects.filter(id_of_tag=hash)
-        posts = [post.id_of_post for post in posts]
+        hash_tag = hash_tag.split(" ")
+        hash = TagModel.objects.filter(tag_text__in=hash_tag)
+        # hash = TagModel.objects.filter(tag_text__in=hash_tag).first()
+        posts = []
+        print hash
+        for hashh in hash:
+            posts = FetchModel.objects.filter(id_of_tag=hashh)
+            posts = [post.id_of_post for post in posts]
+        print posts
         if len(posts) == 0:
             # make a 404 page and render it
             return HttpResponse("<H1><CENTER>NO SUCH TAG FOUND</H1>")
